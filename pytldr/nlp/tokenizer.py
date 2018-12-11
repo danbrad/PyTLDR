@@ -4,7 +4,7 @@ import os.path
 from nltk.stem import SnowballStemmer
 from nltk.tokenize.punkt import PunktSentenceTokenizer, PunktParameters
 from string import punctuation
-from preprocess import unicode_to_ascii
+from .preprocess import unicode_to_ascii
 
 
 class Tokenizer(object):
@@ -17,7 +17,7 @@ class Tokenizer(object):
 
         if isinstance(stopwords, list):
             self._stopwords = stopwords
-        elif isinstance(stopwords, (str, unicode)):
+        elif isinstance(stopwords, str):
             # stopwords argument is a path
             try:
                 self._stopwords = self._load_stopwords(stopwords)
@@ -26,7 +26,7 @@ class Tokenizer(object):
                               'or None (which loads the default list)')
         else:
             # Load built-in stopwords
-            stopwords_dir = 'stopwords/{0}.txt'.format(language.lower())
+            stopwords_dir = '../stopwords/{0}.txt'.format(language.lower())
             application_root = os.path.dirname(__file__)
             stopwords_file = os.path.join(application_root, '..', stopwords_dir)
             self._stopwords = self._load_stopwords(stopwords_file)
@@ -109,7 +109,7 @@ class Tokenizer(object):
         if not non_spaces:
             return text
 
-        first_non_space = non_spaces.next()
+        first_non_space = non_spaces.__next__()
         first_non_space = first_non_space.start()
 
         last_non_space = None
